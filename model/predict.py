@@ -91,8 +91,8 @@ with torch.no_grad():
 
 
 # -----------------------------
-# 7. Display result
-# -----------------------------
+# 7. Display result  
+# -----------------------------   
 
 print("----- Prediction Result -----")
 
@@ -102,4 +102,4 @@ print(f"True label: {classes[true_label]}")
 
 print(f"Predicted: {classes[predicted_label]}")
 
-print(f"Confidence: {confidence * 100:.2f}%")
+print(f"Confidence: {confidence * 100:.2f}%")  
