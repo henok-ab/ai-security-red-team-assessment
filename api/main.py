@@ -1,8 +1,8 @@
 import io
 
 import torch
-from PIL import Image
-from fastapi import FastAPI, File, UploadFile
+from PIL import Image, UnidentifiedImageError
+from fastapi import FastAPI, File, HTTPException, UploadFile
 from torchvision import transforms
 
 from model.model import SimpleCNN
@@ -19,7 +19,16 @@ app = FastAPI(
 
 
 # -----------------------------
-# 2. Load model
+# 2. Security limits
+# -----------------------------
+
+MAX_FILE_SIZE = 5 * 1024 * 1024  # 5 MB
+MAX_IMAGE_WIDTH = 1024
+MAX_IMAGE_HEIGHT = 1024
+
+
+# -----------------------------
+# 3. Load model
 # -----------------------------
 
 MODEL_PATH = "model/weights/pytorch_model.bin"
@@ -36,7 +45,7 @@ model.eval()
 
 
 # -----------------------------
-# 3. Class names
+# 4. Class names
 # -----------------------------
 
 classes = [
@@ -54,7 +63,7 @@ classes = [
 
 
 # -----------------------------
-# 4. Preprocessing
+# 5. Preprocessing
 # -----------------------------
 
 transform = transforms.Compose([
@@ -68,7 +77,7 @@ transform = transforms.Compose([
 
 
 # -----------------------------
-# 5. Health endpoint
+# 6. Health endpoint
 # -----------------------------
 
 @app.get("/health")
@@ -79,18 +88,50 @@ def health():
 
 
 # -----------------------------
-# 6. Prediction endpoint
+# 7. Prediction endpoint
 # -----------------------------
 
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
 
-    # Read uploaded image
+    # Read uploaded file
     image_bytes = await file.read()
 
-    image = Image.open(
-        io.BytesIO(image_bytes)
-    ).convert("RGB")
+    # Check file size
+    if len(image_bytes) > MAX_FILE_SIZE:
+        raise HTTPException(
+            status_code=413,
+            detail="File is too large. Maximum size is 5 MB."
+        )
+
+    # Check that the uploaded content is a valid image
+    try:
+        image_file = Image.open(
+            io.BytesIO(image_bytes)
+        )
+
+        # Verify image integrity
+        image_file.verify()
+
+        # Re-open because verify() consumes the image object
+        image = Image.open(
+            io.BytesIO(image_bytes)
+        ).convert("RGB")
+
+    except (UnidentifiedImageError, OSError):
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid image file."
+        )
+
+    # Check image dimensions
+    width, height = image.size
+
+    if width > MAX_IMAGE_WIDTH or height > MAX_IMAGE_HEIGHT:
+        raise HTTPException(
+            status_code=413,
+            detail="Image dimensions are too large."
+        )
 
     # Preprocess
     image_tensor = transform(image)
@@ -122,3 +163,4 @@ async def predict(file: UploadFile = File(...)):
         "predicted_class": classes[predicted_label],
         "confidence": round(confidence, 4)
     }
+
