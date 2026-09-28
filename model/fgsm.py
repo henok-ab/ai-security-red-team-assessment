@@ -37,7 +37,7 @@ dataset = datasets.CIFAR10(
     transform=transform
 )
 
-image, label = dataset[IMAGE_INDEX]
+image, label = dataset[IMAGE_INDEX] 
 
 image = image.unsqueeze(0)
 label = torch.tensor([label])

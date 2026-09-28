@@ -1,8 +1,8 @@
-\# Model Robustness Mitigation Experiment
+# Model Robustness Mitigation Experiment
 
 
 
-\## 1. Objective
+## 1. Objective
 
 
 
@@ -22,11 +22,11 @@ The original model weights were not modified.
 
 
 
-\---
+---
 
 
 
-\## 2. Defense Method
+## 2. Defense Method
 
 
 
@@ -80,11 +80,11 @@ model/weights/pytorch\_model.bin
 
 
 
-\---
+---
 
 
 
-\## 3. Evaluation Method
+## 3. Evaluation Method
 
 
 
@@ -96,9 +96,9 @@ Two measurements were collected:
 
 
 
-1\. Clean accuracy
+1. Clean accuracy
 
-2\. FGSM attack success rate at ε = 0.03
+2. FGSM attack success rate at ε = 0.03
 
 
 
@@ -122,11 +122,11 @@ This provides a controlled comparison between the original and defended models.
 
 
 
-\---
+---
 
 
 
-\## 4. Clean Accuracy Results
+## 4. Clean Accuracy Results
 
 
 
@@ -148,11 +148,11 @@ This represents an observed increase of 8.39 percentage points under this experi
 
 
 
-\---
+---
 
 
 
-\## 5. FGSM Robustness Results
+## 5. FGSM Robustness Results
 
 
 
@@ -178,11 +178,11 @@ This is a reduction of 24.94 percentage points.
 
 
 
-\---
+---
 
 
 
-\## 6. Interpretation
+## 6. Interpretation
 
 
 
@@ -230,11 +230,11 @@ The result should therefore be interpreted as evidence that adversarial training
 
 
 
-\---
+---
 
 
 
-\## 7. Limitations
+## 7. Limitations
 
 
 
@@ -242,21 +242,21 @@ This experiment has several limitations:
 
 
 
-\* Only one adversarial training epoch was used.
+* Only one adversarial training epoch was used.
 
-\* The defense was evaluated primarily against FGSM.
+* The defense was evaluated primarily against FGSM.
 
-\* The attack strength tested for the comparison was ε = 0.03.
+* The attack strength tested for the comparison was ε = 0.03.
 
-\* The experiment used the CIFAR-10 test dataset.
+* The experiment used the CIFAR-10 test dataset.
 
-\* Only initially correctly classified images were included in the ASR calculation.
+* Only initially correctly classified images were included in the ASR calculation.
 
-\* The experiment did not evaluate other attacks such as PGD, C\&W, or black-box attacks.
+* The experiment did not evaluate other attacks such as PGD, C\&W, or black-box attacks.
 
-\* The results may change with different training configurations, random seeds, preprocessing, or datasets.
+* The results may change with different training configurations, random seeds, preprocessing, or datasets.
 
-\* The increase in clean accuracy should not be assumed to occur for every adversarial-training configuration.
+* The increase in clean accuracy should not be assumed to occur for every adversarial-training configuration.
 
 
 
@@ -264,11 +264,11 @@ Further testing with multiple attack methods and different perturbation strength
 
 
 
-\---
+---
 
 
 
-\## 8. Reproducibility
+## 8. Reproducibility
 
 
 
@@ -292,11 +292,11 @@ The original model is preserved separately from the defended model so that the o
 
 
 
-\---
+---
 
 
 
-\## 9. Security Conclusion
+## 9. Security Conclusion
 
 
 

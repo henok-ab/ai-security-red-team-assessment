@@ -13,7 +13,7 @@ model = SimpleCNN()
 
 state_dict = torch.load(
     MODEL_PATH,
-    map_location="cpu"
+    map_location="cpu"  
 )
 
 model.load_state_dict(state_dict)

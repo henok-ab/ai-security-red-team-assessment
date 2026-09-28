@@ -88,7 +88,7 @@ with torch.no_grad():
 
 # -------------------------
 # 5. Calculate accuracy
-# -------------------------
+# -------------------------  
 
 accuracy = 100 * correct / total
 

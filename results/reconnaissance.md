@@ -276,3 +276,90 @@ Incorrect prediction
 ```
 
 A successful attack will be saved as evidence for the final red-team assessment.
+## Metadata and API Information Disclosure
+
+### HTTP Server Header
+
+The `/health` endpoint returned:
+
+```text
+server: uvicorn
+
+
+---
+
+## Then we move to the next phase
+
+We've now got **model attacks + API reconnaissance**.
+
+The next thing I want to test is particularly useful for your assessment:
+
+### Can our adversarial image bypass the pipeline's assumptions about image format?
+
+We'll test things like:
+
+```text
+normal PNG       → prediction
+JPEG             → prediction
+wrong extension  → behavior
+invalid content  → behavior
+large dimensions → behavior
+
+
+### Extension Validation Test
+**Test:** An existing valid PNG adversarial image was copied to `test_fake.txt` and submitted to `/predict`.
+
+**Request:**
+
+```text
+POST /predict
+file=test_fake.txt
+```
+
+**Result:**
+
+```text
+HTTP 200 OK
+{"predicted_class":"frog","confidence":0.6578}
+```
+
+**Finding:** The API does not rely on the uploaded filename extension to identify image content. The server successfully decoded and classified the image despite the `.txt` extension.
+
+**Security assessment:** This is not considered a vulnerability by itself because validating the actual file content is preferable to trusting the filename extension. However, production deployments should combine content validation with file-size and image-dimension limits and controlled error handling.
+
+**Severity:** Informational / Low
+### Invalid Image Content Test
+
+**Test:** A plain-text file was renamed from `test.txt` to `fake_image.jpg` and uploaded to the `/predict` endpoint.
+
+**Request:**
+
+```text
+POST /predict
+file=fake_image.jpg
+```
+
+**Result:**
+
+```text
+HTTP/1.1 500 Internal Server Error
+content-type: text/plain; charset=utf-8
+
+Internal Server Error
+```
+
+**Finding:** The API attempts to decode the uploaded file as an image based on its actual content rather than trusting the filename extension. When the content is not a valid image, the image-processing exception is not handled by the application and results in an HTTP 500 response.
+
+The server did not expose the Python traceback to the client, but the malformed input still causes an unhandled application error.
+
+**Security impact:** An attacker can intentionally submit malformed files to trigger application exceptions. Repeated malformed requests could increase server workload. Further resource-exhaustion testing would be required before claiming denial-of-service impact.
+
+**Severity:** Low / Medium depending on deployment and rate limiting.
+
+**Recommended mitigation:**
+
+* Validate uploaded image content before inference.
+* Catch image-decoding exceptions such as invalid-image errors.
+* Return a controlled `400 Bad Request` or `415 Unsupported Media Type`.
+* Apply file-size and image-dimension limits.
+* Consider rate limiting the prediction endpoint.
