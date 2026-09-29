@@ -21,7 +21,7 @@ classes = [
 ]
 
 
-def evaluate(transform, name):
+def evaluate(transform, name):  //evaluate function takes a transform and a name as input, loads the model, applies the transform to the CIFAR-10 test dataset, and calculates the accuracy of the model on the transformed dataset.
 
     model = SimpleCNN()
 

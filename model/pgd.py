@@ -1,7 +1,7 @@
 import torch
 import torch.nn.functional as F
 from torchvision import datasets, transforms
-from PIL import Image
+from PIL import Image 
 
 from model import SimpleCNN
 
@@ -13,7 +13,7 @@ EPSILON = 0.03
 ALPHA = 0.005 
 STEPS = 10
 
-DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
 
 CLASS_NAMES = [
     "airplane",
@@ -72,7 +72,7 @@ dataset = datasets.CIFAR10(
 # -----------------------------
 def pgd_attack(model, image, label, epsilon, alpha, steps):
 
-    original_image = image.clone().detach()
+    original_image = image.clone().detach() 
 
     adversarial_image = image.clone().detach()
 

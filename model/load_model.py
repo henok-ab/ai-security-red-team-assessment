@@ -20,6 +20,6 @@ model.load_state_dict(state_dict)
 
 print("Model state dict loaded successfully!")
 
-model.eval()
+model.eval() 
 
 print("Model loaded successfully!")

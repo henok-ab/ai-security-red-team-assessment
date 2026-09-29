@@ -14,12 +14,12 @@ DEFENDED_MODEL = "model/weights/defended_model.pth"
 
 
 # -----------------------------------
-# Preprocessing
+# Preprocessing means 
 # -----------------------------------
 
 transform = transforms.Compose([
     transforms.ToTensor(),
-    transforms.Normalize(
+    transforms.Normalize( #normalize means telling 
         (0.4914, 0.4822, 0.4465),
         (0.2470, 0.2435, 0.2616)
     )
