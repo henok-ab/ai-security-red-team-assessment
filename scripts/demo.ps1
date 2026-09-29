@@ -64,20 +64,6 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 
-# -----------------------------------------------
-# 5. PGD Defense
-# -----------------------------------------------
-
-Write-Host ""
-Write-Host "===== 5. PGD DEFENSE TRAINING =====" -ForegroundColor Cyan
-
-python model/pgd_defense.py
-
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "PGD defense training failed." -ForegroundColor Red
-    exit 1
-}
-
 
 # -----------------------------------------------
 # 6. PGD Defense Comparison
