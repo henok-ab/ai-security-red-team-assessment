@@ -96,7 +96,7 @@ Write-Host ""
 
 Write-Host "Virtual environment:"
 Write-Host "    .\venv\Scripts\Activate.ps1"
-
+Write-Host "    .uvicorn api.main:app --host 127.0.0.1 --port 8000"
 Write-Host ""
 Write-Host "Next steps:"
 Write-Host "    python model/inspect_model.py"
